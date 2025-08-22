@@ -14,8 +14,9 @@ const derivedHttp = subdomain && region
   ? `https://${subdomain}.graphql.${region}.nhost.run/v1`
   : undefined
 
+// Ensure URLs don't have /graphql suffix for proper connection
 const httpUrl = (explicitHttp || derivedHttp)?.replace(/\/v1\/graphql$/, '/v1')
-const wsUrl = explicitWs || (httpUrl ? httpUrl.replace(/^http/, 'ws') : undefined)
+const wsUrl = explicitWs?.replace(/\/v1\/graphql$/, '/v1') || (httpUrl ? httpUrl.replace(/^http/, 'ws') : undefined)
 
 const httpLink = new HttpLink({ uri: httpUrl })
 
